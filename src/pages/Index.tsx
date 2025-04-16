@@ -1,10 +1,9 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { MagnifyingGlassIcon, ComputerDesktopIcon, GlobeAltIcon } from "lucide-react";
+import { Search, Monitor, Globe } from "lucide-react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Badge } from "@/components/ui/badge";
 
@@ -71,7 +70,7 @@ const Index = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <MagnifyingGlassIcon className="absolute left-3 top-3.5 h-5 w-5 text-white/70" />
+            <Search className="absolute left-3 top-3.5 h-5 w-5 text-white/70" />
           </div>
         </div>
       </div>
@@ -270,9 +269,9 @@ const AppCard = ({ app, type }) => {
           <div className="flex items-center space-x-4">
             <div className={`p-2 rounded-lg ${isDesktop ? "bg-amber-100 text-amber-700" : "bg-blue-100 text-blue-700"}`}>
               {isDesktop ? (
-                <ComputerDesktopIcon className="h-5 w-5" />
+                <Monitor className="h-5 w-5" />
               ) : (
-                <GlobeAltIcon className="h-5 w-5" />
+                <Globe className="h-5 w-5" />
               )}
             </div>
             <div>
