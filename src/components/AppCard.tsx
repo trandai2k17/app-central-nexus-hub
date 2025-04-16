@@ -41,7 +41,7 @@ const AppCard = ({ app, type, onShowUpdate, onShowDescription }: AppCardProps) =
     <Card className="card-glow border relative overflow-hidden group">
       {/* Glow border effect */}
       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-        <div className="absolute inset-0 -m-1 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 rounded-xl animate-[gradient-shift_3s_ease_infinite]"></div>
+        <div className="absolute inset-0 -m-1 bg-gradient-to-r from-blue-500 via-indigo-600 to-blue-500 rounded-xl animate-[gradient-shift_3s_ease_infinite]"></div>
       </div>
       
       <CardHeader className="pb-3 relative">
@@ -132,11 +132,11 @@ const AppCard = ({ app, type, onShowUpdate, onShowDescription }: AppCardProps) =
       <CardFooter className={`relative ${isDesktop ? "grid grid-cols-2 gap-2" : ""}`}>
         {isDesktop ? (
           <>
-            <Button variant="default" className="w-full liquid-button" size="sm">Download</Button>
+            <Button variant="default" className="w-full liquid-button bg-transparent" size="sm">Download</Button>
             <Button variant="outline" className="w-full filter-button" size="sm">Guide</Button>
           </>
         ) : (
-          <Button className="w-full liquid-button" variant="default" size="sm" asChild>
+          <Button className="w-full liquid-button bg-transparent" variant="default" size="sm" asChild>
             <a href={app.url} target="_blank" rel="noreferrer">Open Application</a>
           </Button>
         )}

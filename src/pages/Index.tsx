@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import AppHeader from "@/components/AppHeader";
 import HeroCarousel from "@/components/HeroCarousel";
@@ -9,28 +8,28 @@ import SupportSection from "@/components/SupportSection";
 import Footer from "@/components/Footer";
 
 const Index = () => {
-  // Sample carousel announcements
+  // Sample carousel announcements with the requested themes
   const carouselAnnouncements = [
     {
-      title: "New Finance Dashboard Released",
-      description: "Access powerful financial data visualizations and reporting tools",
-      cta: "Try it now",
-      ctaLink: "#finance-dashboard",
-      bgImage: "linear-gradient(to right, #4f46e5, #7c3aed)"
+      title: "Enhanced Multifactor Authentication",
+      description: "Protect your company assets with our advanced multifactor authentication system",
+      cta: "Learn More",
+      ctaLink: "#multifactor",
+      bgImage: "linear-gradient(to right, #1A1F2C, #394867)"
     },
     {
-      title: "Upcoming System Maintenance",
-      description: "Scheduled maintenance on April 20, 2025 from 2:00 AM to 4:00 AM",
-      cta: "Read more",
-      ctaLink: "#system-maintenance",
-      bgImage: "linear-gradient(to right, #f59e0b, #d97706)"
+      title: "Prevent Phishing Attacks",
+      description: "Our email security solutions help identify and block phishing attempts in your organization",
+      cta: "View Solutions",
+      ctaLink: "#anti-phishing",
+      bgImage: "linear-gradient(to right, #3F2B56, #6D4A91)"
     },
     {
-      title: "Welcome to the New App Portal",
-      description: "Discover all company applications in one centralized location",
-      cta: "Explore apps",
-      ctaLink: "#app-list",
-      bgImage: "linear-gradient(to right, #0ea5e9, #0284c7)"
+      title: "IT Policy Management",
+      description: "Simplify compliance and security with our comprehensive IT policy management tools",
+      cta: "Explore Policies",
+      ctaLink: "#policy-it",
+      bgImage: "linear-gradient(to right, #0B4F6C, #01BAEF)"
     }
   ];
 
