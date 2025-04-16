@@ -1,29 +1,186 @@
+
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Monitor, Globe } from "lucide-react";
+import { Search, Monitor, Globe, Info, FileText, Calendar } from "lucide-react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { format } from "date-fns";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 const Index = () => {
   // Sample application data - replace with your actual applications
   const webApps = [
-    { name: "HR Portal", description: "Employee management system", url: "https://hr.company.com", icon: "users", category: "HR" },
-    { name: "Finance Dashboard", description: "Financial reporting tool", url: "https://finance.company.com", icon: "banknote", category: "Finance" },
-    { name: "CRM System", description: "Customer relationship management", url: "https://crm.company.com", icon: "user", category: "Sales" },
-    { name: "Project Tracker", description: "Project management system", url: "https://projects.company.com", icon: "kanban", category: "Operations" },
-    { name: "Support Desk", description: "IT support ticketing system", url: "https://support.company.com", icon: "headphones", category: "IT" },
+    { 
+      name: "HR Portal", 
+      description: "Employee management system", 
+      url: "https://hr.company.com", 
+      icon: "users", 
+      category: "HR",
+      lastModified: new Date("2025-04-10"),
+      lastUpdate: {
+        title: "Bug fixes and performance improvements",
+        description: "Fixed issue with employee data not loading correctly. Improved page load times.",
+        updatedBy: "John Doe",
+        date: new Date("2025-04-10")
+      },
+      detailedDescription: "The HR Portal provides comprehensive employee management capabilities including onboarding, performance reviews, time-off requests, and personnel records management. HR administrators can manage employee profiles, track attendance, and generate reports."
+    },
+    { 
+      name: "Finance Dashboard", 
+      description: "Financial reporting tool", 
+      url: "https://finance.company.com", 
+      icon: "banknote", 
+      category: "Finance",
+      lastModified: new Date("2025-04-15"),
+      lastUpdate: {
+        title: "Added new reporting features",
+        description: "Added quarterly financial reports and enhanced data visualization capabilities.",
+        updatedBy: "Jane Smith",
+        date: new Date("2025-04-15")
+      },
+      detailedDescription: "The Finance Dashboard provides real-time financial data visualization and reporting tools. Users can generate balance sheets, income statements, cash flow reports, and create custom financial analyses with various chart types."
+    },
+    { 
+      name: "CRM System", 
+      description: "Customer relationship management", 
+      url: "https://crm.company.com", 
+      icon: "user", 
+      category: "Sales",
+      lastModified: new Date("2025-03-28"),
+      lastUpdate: {
+        title: "New contact management feature",
+        description: "Added ability to import contacts from CSV files and improved search functionality.",
+        updatedBy: "Mike Johnson",
+        date: new Date("2025-03-28")
+      },
+      detailedDescription: "The CRM System helps manage customer relationships through comprehensive contact management, sales pipeline tracking, opportunity management, and customer service features. It integrates with email systems for seamless communication tracking."
+    },
+    { 
+      name: "Project Tracker", 
+      description: "Project management system", 
+      url: "https://projects.company.com", 
+      icon: "kanban", 
+      category: "Operations",
+      lastModified: new Date("2025-04-05"),
+      lastUpdate: {
+        title: "Added Kanban board view",
+        description: "Implemented drag-and-drop Kanban board for visual project management.",
+        updatedBy: "Sarah Williams",
+        date: new Date("2025-04-05")
+      },
+      detailedDescription: "The Project Tracker enables teams to plan, execute, and monitor projects effectively. Features include task assignment, timeline visualization, resource allocation, progress tracking, and automated reporting capabilities."
+    },
+    { 
+      name: "Support Desk", 
+      description: "IT support ticketing system", 
+      url: "https://support.company.com", 
+      icon: "headphones", 
+      category: "IT",
+      lastModified: new Date("2025-04-12"),
+      lastUpdate: {
+        title: "Improved ticket categorization",
+        description: "Enhanced ticket categorization and implemented automated routing based on ticket type.",
+        updatedBy: "David Brown",
+        date: new Date("2025-04-12")
+      },
+      detailedDescription: "The Support Desk manages IT support requests through an intuitive ticketing system. It includes automatic ticket assignment, SLA monitoring, knowledge base integration, and analytics dashboards for tracking support team performance."
+    },
   ];
 
   const desktopApps = [
-    { name: "Inventory Manager", description: "Manage company inventory", downloadUrl: "#", installationGuide: "#", icon: "package", category: "Operations" },
-    { name: "Data Analyzer", description: "Desktop analysis tool", downloadUrl: "#", installationGuide: "#", icon: "bar-chart", category: "Analytics" },
-    { name: "Report Generator", description: "Generate custom reports", downloadUrl: "#", installationGuide: "#", icon: "file-text", category: "Finance" },
-    { name: "Document Scanner", description: "Scan and process documents", downloadUrl: "#", installationGuide: "#", icon: "file-scan", category: "Admin" },
-    { name: "Security Monitor", description: "System security monitoring", downloadUrl: "#", installationGuide: "#", icon: "shield", category: "IT" },
+    { 
+      name: "Inventory Manager", 
+      description: "Manage company inventory", 
+      downloadUrl: "#", 
+      installationGuide: "#", 
+      icon: "package", 
+      category: "Operations",
+      lastModified: new Date("2025-03-25"),
+      lastUpdate: {
+        title: "Added barcode scanning feature",
+        description: "Implemented barcode scanning functionality for faster inventory updates.",
+        updatedBy: "Alex Johnson",
+        date: new Date("2025-03-25")
+      },
+      detailedDescription: "The Inventory Manager desktop application provides comprehensive inventory tracking capabilities. Users can monitor stock levels, manage purchase orders, track product locations, and generate inventory reports with real-time data."
+    },
+    { 
+      name: "Data Analyzer", 
+      description: "Desktop analysis tool", 
+      downloadUrl: "#", 
+      installationGuide: "#", 
+      icon: "bar-chart", 
+      category: "Analytics",
+      lastModified: new Date("2025-04-08"),
+      lastUpdate: {
+        title: "Enhanced data visualization",
+        description: "Added new chart types and improved export capabilities.",
+        updatedBy: "Emily Chen",
+        date: new Date("2025-04-08")
+      },
+      detailedDescription: "The Data Analyzer is a powerful desktop tool for data processing and visualization. It supports various data formats, provides statistical analysis functions, and offers interactive visualization options for effective data exploration."
+    },
+    { 
+      name: "Report Generator", 
+      description: "Generate custom reports", 
+      downloadUrl: "#", 
+      installationGuide: "#", 
+      icon: "file-text", 
+      category: "Finance",
+      lastModified: new Date("2025-04-01"),
+      lastUpdate: {
+        title: "Added PDF export functionality",
+        description: "Implemented PDF export with custom branding options.",
+        updatedBy: "Robert Miller",
+        date: new Date("2025-04-01")
+      },
+      detailedDescription: "The Report Generator creates professional custom reports from multiple data sources. Features include template customization, scheduled reporting, conditional formatting, and support for various output formats including PDF, Excel, and web formats."
+    },
+    { 
+      name: "Document Scanner", 
+      description: "Scan and process documents", 
+      downloadUrl: "#", 
+      installationGuide: "#", 
+      icon: "file-scan", 
+      category: "Admin",
+      lastModified: new Date("2025-03-30"),
+      lastUpdate: {
+        title: "Improved OCR capabilities",
+        description: "Enhanced OCR accuracy and added support for more languages.",
+        updatedBy: "Lisa Wang",
+        date: new Date("2025-03-30")
+      },
+      detailedDescription: "The Document Scanner enables efficient document digitization with OCR capabilities. Users can scan physical documents, convert them to searchable PDF files, and integrate with document management systems for organized storage."
+    },
+    { 
+      name: "Security Monitor", 
+      description: "System security monitoring", 
+      downloadUrl: "#", 
+      installationGuide: "#", 
+      icon: "shield", 
+      category: "IT",
+      lastModified: new Date("2025-04-14"),
+      lastUpdate: {
+        title: "Enhanced threat detection",
+        description: "Implemented advanced threat detection algorithms and real-time alerts.",
+        updatedBy: "Thomas Anderson",
+        date: new Date("2025-04-14")
+      },
+      detailedDescription: "The Security Monitor provides comprehensive system security oversight, including intrusion detection, vulnerability scanning, and security event monitoring. It offers real-time alerts, detailed logging, and compliance reporting features."
+    },
   ];
+
+  // Dialog states
+  const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
+  const [selectedAppUpdate, setSelectedAppUpdate] = useState(null);
+  
+  const [isDescriptionDialogOpen, setIsDescriptionDialogOpen] = useState(false);
+  const [selectedAppDescription, setSelectedAppDescription] = useState("");
 
   const categories = Array.from(new Set([...webApps.map(app => app.category), ...desktopApps.map(app => app.category)]));
   
@@ -109,6 +266,14 @@ const Index = () => {
                 key={`web-${index}`} 
                 app={app} 
                 type="web" 
+                onShowUpdate={(updateInfo) => {
+                  setSelectedAppUpdate(updateInfo);
+                  setIsUpdateDialogOpen(true);
+                }}
+                onShowDescription={(description) => {
+                  setSelectedAppDescription(description);
+                  setIsDescriptionDialogOpen(true);
+                }}
               />
             ))}
             {filteredDesktopApps.map((app, index) => (
@@ -116,6 +281,14 @@ const Index = () => {
                 key={`desktop-${index}`} 
                 app={app} 
                 type="desktop" 
+                onShowUpdate={(updateInfo) => {
+                  setSelectedAppUpdate(updateInfo);
+                  setIsUpdateDialogOpen(true);
+                }}
+                onShowDescription={(description) => {
+                  setSelectedAppDescription(description);
+                  setIsDescriptionDialogOpen(true);
+                }}
               />
             ))}
           </div>
@@ -129,6 +302,14 @@ const Index = () => {
                 key={index} 
                 app={app} 
                 type="web" 
+                onShowUpdate={(updateInfo) => {
+                  setSelectedAppUpdate(updateInfo);
+                  setIsUpdateDialogOpen(true);
+                }}
+                onShowDescription={(description) => {
+                  setSelectedAppDescription(description);
+                  setIsDescriptionDialogOpen(true);
+                }}
               />
             ))}
           </div>
@@ -142,11 +323,62 @@ const Index = () => {
                 key={index} 
                 app={app} 
                 type="desktop" 
+                onShowUpdate={(updateInfo) => {
+                  setSelectedAppUpdate(updateInfo);
+                  setIsUpdateDialogOpen(true);
+                }}
+                onShowDescription={(description) => {
+                  setSelectedAppDescription(description);
+                  setIsDescriptionDialogOpen(true);
+                }}
               />
             ))}
           </div>
         </TabsContent>
       </Tabs>
+
+      {/* Update Info Dialog */}
+      <Dialog open={isUpdateDialogOpen} onOpenChange={setIsUpdateDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Update Information</DialogTitle>
+            <DialogDescription>Latest update details for this application</DialogDescription>
+          </DialogHeader>
+          {selectedAppUpdate && (
+            <div className="space-y-4 pt-4">
+              <div className="grid grid-cols-[100px_1fr] gap-2 items-start">
+                <span className="text-sm font-semibold">Title:</span>
+                <span>{selectedAppUpdate.title}</span>
+              </div>
+              <div className="grid grid-cols-[100px_1fr] gap-2 items-start">
+                <span className="text-sm font-semibold">Description:</span>
+                <span>{selectedAppUpdate.description}</span>
+              </div>
+              <div className="grid grid-cols-[100px_1fr] gap-2 items-start">
+                <span className="text-sm font-semibold">Updated By:</span>
+                <span>{selectedAppUpdate.updatedBy}</span>
+              </div>
+              <div className="grid grid-cols-[100px_1fr] gap-2 items-start">
+                <span className="text-sm font-semibold">Date:</span>
+                <span>{format(selectedAppUpdate.date, 'PPP')}</span>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Description Dialog */}
+      <Dialog open={isDescriptionDialogOpen} onOpenChange={setIsDescriptionDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Application Description</DialogTitle>
+            <DialogDescription>Detailed overview of this application's functionality</DialogDescription>
+          </DialogHeader>
+          <div className="pt-4">
+            <p>{selectedAppDescription}</p>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Announcements Section */}
       <div className="mb-16">
@@ -259,11 +491,11 @@ const Index = () => {
 };
 
 // App Card Component
-const AppCard = ({ app, type }) => {
+const AppCard = ({ app, type, onShowUpdate, onShowDescription }) => {
   const isDesktop = type === "desktop";
   
   return (
-    <Card className="transition-all duration-200 hover:shadow-md border">
+    <Card className="transition-all duration-200 hover:shadow-md border relative">
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="flex items-center space-x-4">
@@ -279,6 +511,39 @@ const AppCard = ({ app, type }) => {
               <CardDescription className="line-clamp-2">{app.description}</CardDescription>
             </div>
           </div>
+          <div className="flex space-x-2">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="h-8 w-8"
+                  onClick={() => onShowDescription(app.detailedDescription)}
+                >
+                  <Info className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>View description</p>
+              </TooltipContent>
+            </Tooltip>
+            
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="h-8 w-8"
+                  onClick={() => onShowUpdate(app.lastUpdate)}
+                >
+                  <FileText className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>View update info</p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
         </div>
       </CardHeader>
       <CardContent className="pb-3">
@@ -287,6 +552,10 @@ const AppCard = ({ app, type }) => {
           <Badge variant={isDesktop ? "outline" : "default"}>
             {isDesktop ? "Desktop App" : "Web App"}
           </Badge>
+        </div>
+        <div className="flex items-center mt-3 text-sm text-muted-foreground">
+          <Calendar className="h-3.5 w-3.5 mr-1.5" />
+          <span>Modified: {format(app.lastModified, "MMM d, yyyy")}</span>
         </div>
       </CardContent>
       <CardFooter className={isDesktop ? "grid grid-cols-2 gap-2" : ""}>
